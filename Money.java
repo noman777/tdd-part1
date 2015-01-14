@@ -28,7 +28,11 @@ class Money implements Expression{
 	}
 	
 	Expression plus(Money addend) {
-		return new Money(amount + addend.amount, currency);
+		return new Sum(this, addend);
+	}
+	
+	public Money reduce(String to) {
+		return this;
 	}
 
 	protected String currency() {
@@ -42,13 +46,29 @@ class Money implements Expression{
 }
 
 class Bank{
+	
 	Money reduce(Expression source, String to) {
-		return Money.dollar(10);
+		return source.reduce(to);
+	}
+}
+
+class Sum implements Expression {
+	Money augend;
+	Money addend;
+	
+	Sum(Money augend, Money addend) {
+		this.augend= augend;
+		this.addend= addend;
+	}
+	
+	public Money reduce(String to) {
+		int amount= augend.amount + addend.amount;
+		return new Money(amount, to);
 	}
 }
 
 interface Expression{
-	
+	Money reduce(String to);
 }
 
 
