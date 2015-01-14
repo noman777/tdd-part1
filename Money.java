@@ -1,5 +1,7 @@
 package com.sibi;
 
+import java.util.Hashtable;
+
 class Money implements Expression{
 
 	protected int amount;
@@ -32,8 +34,17 @@ class Money implements Expression{
 	}
 	
 	public Money reduce(String to) {
-		return this;
+		int rate = (currency.equals("CHF") && to.equals("USD"))
+		? 2
+		: 1;
+		return new Money(amount / rate, to);
 	}
+	
+	public Money reduce(Bank bank, String to) {
+		int rate = bank.rate(currency, to);
+		return new Money(amount / rate, to);
+	}
+	
 
 	protected String currency() {
 		return currency;
@@ -43,13 +54,44 @@ class Money implements Expression{
 		return amount + " " + currency;
 	}
 
+
+	
 }
 
 class Bank{
 	
-	Money reduce(Expression source, String to) {
-		return source.reduce(to);
+	private Hashtable rates= new Hashtable();
+	int rate(String from, String to) {
+		if (from.equals(to)) return 1;
+		Integer rate= (Integer) rates.get(new Pair(from, to));
+		return rate.intValue();
 	}
+	
+	Money reduce(Expression source, String to) {
+		return source.reduce(this, to);
+	}
+	
+	void addRate(String from, String to, int rate) {
+		rates.put(new Pair(from, to), new Integer(rate));
+	}
+	
+	private class Pair {
+		private String from;
+		private String to;
+		Pair(String from, String to) {
+		this.from= from;
+		this.to= to;
+		}
+		
+		public boolean equals(Object object) {
+			Pair pair= (Pair) object;
+			return from.equals(pair.from) && to.equals(pair.to);
+		}
+		public int hashCode() {
+			return 0;
+		}
+	}
+	
 }
 
 class Sum implements Expression {
@@ -65,10 +107,18 @@ class Sum implements Expression {
 		int amount= augend.amount + addend.amount;
 		return new Money(amount, to);
 	}
+	
+	public Money reduce(Bank bank, String to) {
+		int amount= augend.amount + addend.amount;
+		return new Money(amount, to);
+	}
+	
+	
 }
 
 interface Expression{
 	Money reduce(String to);
+	Money reduce(Bank bank, String to);
 }
 
 
