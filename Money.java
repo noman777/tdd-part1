@@ -11,16 +11,17 @@ class Money {
 	}
 
 	static Money dollar(int amount) {
-		return new Dollar(amount, "USD");
+		return new Money(amount, "USD");
+	}
+	
+	static Money franc(int amount){
+		return new Money(amount, "CHF");
 	}
 
 	public String toString() {
 		return amount + " " + currency;
 	}
 
-	static Money franc(int amount) {
-		return new Franc(amount, "CHF");
-	}
 
 	Money times(int multiplier) {
 		return new Money(amount * multiplier, currency);
@@ -36,7 +37,7 @@ class Money {
 	}
 
 }
-
+/*
 class Dollar extends Money {
 
 	Dollar(int amount, String currency) {
@@ -51,4 +52,4 @@ class Franc extends Money {
 		super(amount, currency);
 	}
 
-}
+}*/
