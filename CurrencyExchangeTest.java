@@ -12,9 +12,7 @@ public class CurrencyExchangeTest {
 		
 		assertTrue(Money.dollar(5).equals(Money.dollar(5)));
 		assertFalse(Money.dollar(5).equals(Money.dollar(6)));
-		//assertTrue(new Franc(5).equals(new Franc(5)));
-		//assertFalse(new Franc(5).equals(new Franc(6)));
-		//assertFalse(new Franc(5).equals(Money.dollar(5)));
+	
 	}	
 	
 	@Test
@@ -37,4 +35,8 @@ public class CurrencyExchangeTest {
 		assertEquals("CHF", Money.franc(1).currency());
 	}
 	
+	@Test
+	public void testDifferentClassEquality() {
+		assertTrue(new Money(10, "CHF").equals(new Franc(10, "CHF")));
+    }
 }
