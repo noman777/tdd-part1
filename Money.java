@@ -1,6 +1,6 @@
 package com.sibi;
 
-class Money {
+class Money implements Expression{
 
 	protected int amount;
 	protected String currency;
@@ -18,11 +18,6 @@ class Money {
 		return new Money(amount, "CHF");
 	}
 
-	public String toString() {
-		return amount + " " + currency;
-	}
-
-
 	Money times(int multiplier) {
 		return new Money(amount * multiplier, currency);
 	}
@@ -31,25 +26,29 @@ class Money {
 		Money money = (Money) object;
 		return amount == money.amount && currency().equals(money.currency());
 	}
+	
+	Expression plus(Money addend) {
+		return new Money(amount + addend.amount, currency);
+	}
 
 	protected String currency() {
 		return currency;
 	}
-
-}
-/*
-class Dollar extends Money {
-
-	Dollar(int amount, String currency) {
-		super(amount, currency);
+	
+	public String toString() {
+		return amount + " " + currency;
 	}
 
 }
 
-class Franc extends Money {
-
-	Franc(int amount, String currency) {
-		super(amount, currency);
+class Bank{
+	Money reduce(Expression source, String to) {
+		return Money.dollar(10);
 	}
+}
 
-}*/
+interface Expression{
+	
+}
+
+
