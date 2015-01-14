@@ -9,9 +9,13 @@ public class CurrencyExchangeTest {
 
 	@Test
 	public void testEquality() {
-		Dollar five= new Dollar(5);
-		assertEquals(new Dollar(10), five.times(2));
-		assertEquals(new Dollar(15), five.times(3));
+		//Dollar five= new Dollar(5);
+		//assertEquals(new Dollar(10), five.times(2));
+		//assertEquals(new Dollar(15), five.times(3));
+		
+		Franc five= new Franc(5);
+		assertEquals(new Franc(10), five.times(2));
+		assertEquals(new Franc(15), five.times(3));
 	}
 	
 	@Test
@@ -42,4 +46,23 @@ public class CurrencyExchangeTest {
 		}
 
 	}
+	
+	class Franc {
+			
+			private int amount;
+			
+			Franc(int amt) {
+				this.amount = amt;
+			}
+	
+			Franc times(int multiplier) {
+				return new Franc(amount * multiplier);
+			}		
+			
+			public boolean equals(Object object) {			
+				Franc dollar= (Franc) object;
+				return amount == dollar.amount;
+			}
+	}
+	
 }
